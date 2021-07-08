@@ -1,0 +1,23 @@
+{
+  "name": "reveal",
+  "author": "Mani barathi",
+  "version": "0.0.1",
+  "license": "MIT",
+  "description": "A Simple Password Manager",
+  "main": "./src/index.js",
+  "bin": "./src/index.js",
+  "preferGlobal": true,
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mani-barathi/reveal"
+  },
+  "keywords": [
+    "reveal",
+    "password",
+    "manager"
+  ]
+}
