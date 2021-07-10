@@ -3,8 +3,18 @@ const crypto = require("crypto");
 const algorithm = "aes-256-ctr";
 const seperator = "::";
 
+// Secret Key Must be 256 bits (32 bytes/characters)
+function generateSecretKey(masterPassword, app, email) {
+  let secretKey = masterPassword + "-" + app + "-" + email;
+  if (secretKey.length !== 32) {
+    secretKey += "abcdeabcdeabcde";
+    secretKey = secretKey.substr(0, 32);
+  }
+  return secretKey;
+}
+
 function encrypt(text, secretKey) {
-  const iv = crypto.randomBytes(16);
+  const iv = crypto.randomBytes(16); // For AES, this is always 16
   const cipher = crypto.createCipheriv(algorithm, secretKey, iv);
   let encrypted = cipher.update(text);
 
@@ -29,4 +39,4 @@ function decrypt(text, secretKey) {
   }
 }
 
-module.exports = { encrypt, decrypt };
+module.exports = { encrypt, decrypt, generateSecretKey };

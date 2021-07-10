@@ -11,7 +11,8 @@
     "start": "node src/index.js"
   },
   "dependencies": {
-    "enquirer": "^2.3.6"
+    "pg": "^8.6.0",
+    "prompt-sync": "^4.2.0"
   },
   "repository": {
     "type": "git",

@@ -1,50 +1,42 @@
 #!/usr/bin/env node
-// @ts-nocheck
-const { prompt, Select } = require("enquirer");
-const { addPassword, viewAllApps, getPassword } = require("./actions");
-
-const getMasterPassword = async () => {
-  const { password } = await prompt([
-    {
-      type: "password",
-      name: "password",
-      message: "Enter your Master Password",
-    },
-  ]);
-  return password;
-};
+const prompt = require("prompt-sync")({
+  autocomplete: false,
+  history: false,
+});
+const {
+  handleAddPassword,
+  handleViewApps,
+  handleGetPassword,
+} = require("./actions");
 
 const menu = async () => {
-  console.log("---------------------------------------------");
-  const choice = await new Select({
-    name: "choice",
-    message: "What do want to do?",
-    choices: ["New Password", "View All Apps", "Get Password", "Quit"],
-  }).run();
+  console.log("------------------------------------------");
+  console.log("1. Add Password    2. View Apps    3. Get Password");
+  const choice = prompt(": ");
   return choice;
 };
 
 const main = async () => {
-  const masterPassword = await getMasterPassword();
+  const masterPassword = prompt("Master Password: ", { echo: "*" });
   if (!masterPassword) return;
 
   while (true) {
     const choice = await menu();
     switch (choice) {
-      case "New Password":
-        await addPassword();
+      case "1":
+        await handleAddPassword(masterPassword);
         break;
 
-      case "View All Apps":
-        await viewAllApps();
+      case "2":
+        await handleViewApps();
         break;
 
-      case "Get Password":
-        await getPassword();
+      case "3":
+        await handleGetPassword(masterPassword);
         break;
 
-      case "Quit":
-        return console.log("Quit");
+      default:
+        process.exit();
     }
   }
 };
