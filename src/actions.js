@@ -1,8 +1,10 @@
-const prompt = require("prompt-sync")({
-  autocomplete: false,
-  history: false,
-});
-const { checkRowExists, db, addPassword } = require("./db");
+const prompt = require("prompt-sync")();
+const {
+  checkRowExists,
+  addPassword,
+  getPassword,
+  getAllApps,
+} = require("./db");
 const { encrypt, generateSecretKey, decrypt } = require("./encrypt-decrypt");
 
 const primaryEmail = "mani@gmail.com";
@@ -32,12 +34,40 @@ const handleAddPassword = async (masterPassword) => {
   }
 };
 
-const handleViewApps = async () => {
-  console.log("viewAllApps");
+const handleGetPassword = async (masterPassword) => {
+  try {
+    const idOrApp = prompt("Enter App Name or Id: ").toLowerCase();
+    const rows = await getPassword(idOrApp);
+
+    if (!rows) {
+      return console.log(`No Record found`);
+    }
+
+    let index = 0;
+    if (rows.length > 1) {
+      const transormedRows = rows.map(({ app, email }) => ({ app, email }));
+      console.table(transormedRows);
+      index = parseInt(prompt("choose an index: "));
+    }
+
+    let row = rows[index];
+    const secretKey = generateSecretKey(masterPassword, row.app, row.email);
+    const decryptedPassword = decrypt(row.password, secretKey);
+    if (decryptedPassword) {
+      console.log(decryptedPassword);
+    }
+  } catch (e) {
+    console.log("Error: ", e.message);
+  }
 };
 
-const handleGetPassword = async (masterPassword) => {
-  console.log("handleGetPassword");
+const handleViewApps = async () => {
+  try {
+    const rows = await getAllApps();
+    console.table(rows);
+  } catch (e) {
+    console.log("Error: ", e.message);
+  }
 };
 
 module.exports = {

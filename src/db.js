@@ -22,4 +22,18 @@ const addPassword = async (app, email, password) => {
   return null;
 };
 
-module.exports = { checkRowExists, db, addPassword };
+const getAllApps = async () => {
+  let query = `select id, app, email, timestamp from passwords order by app asc`;
+  const { rows } = await db.query(query);
+  return rows;
+};
+
+const getPassword = async (idOrApp) => {
+  const isId = !isNaN(idOrApp);
+  let query = `select * from passwords where ${isId ? "id" : "app"} = $1;`;
+  const { rows } = await db.query(query, [idOrApp]);
+  if (rows.length) return rows;
+  return null;
+};
+
+module.exports = { checkRowExists, db, addPassword, getPassword, getAllApps };

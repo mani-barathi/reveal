@@ -1,8 +1,5 @@
 #!/usr/bin/env node
-const prompt = require("prompt-sync")({
-  autocomplete: false,
-  history: false,
-});
+const prompt = require("prompt-sync")();
 const {
   handleAddPassword,
   handleViewApps,
@@ -10,7 +7,7 @@ const {
 } = require("./actions");
 
 const menu = async () => {
-  console.log("------------------------------------------");
+  console.log("\n------------------------------------------");
   console.log("1. Add Password    2. View Apps    3. Get Password");
   const choice = prompt(": ");
   return choice;
