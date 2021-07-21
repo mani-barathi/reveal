@@ -4,11 +4,12 @@ const {
   handleAddPassword,
   handleViewApps,
   handleGetPassword,
+  handleDeletePassword
 } = require("./actions");
 
 const menu = async () => {
   console.log("\n------------------------------------------");
-  console.log("1. Add Password    2. View Apps    3. Get Password");
+  console.log("1. Add   2. View Apps   3. Get   4. Delete ");
   const choice = prompt(": ");
   return choice;
 };
@@ -30,6 +31,10 @@ const main = async () => {
 
       case "3":
         await handleGetPassword(masterPassword);
+        break;
+
+      case "4":
+        await handleDeletePassword(masterPassword);
         break;
 
       default:

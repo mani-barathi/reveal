@@ -4,6 +4,7 @@ const {
   addPassword,
   getPassword,
   getAllApps,
+ deletePassword,
 } = require("./db");
 const { encrypt, generateSecretKey, decrypt } = require("./encrypt-decrypt");
 
@@ -70,8 +71,23 @@ const handleViewApps = async () => {
   }
 };
 
+const handleDeletePassword = async () => {
+  try {
+    const id = prompt("Enter Id to delete: ").toLowerCase();
+    const deletedRow = await deletePassword(id);
+    if(deletedRow)
+      console.log(`deleted record (${deletedRow.app}', '${deletedRow.email}')`);
+    else
+      console.log("Unable to delete ID might be wrong");
+
+  } catch (e) {
+    console.log("Error: ", e.message);
+  }
+};
+
 module.exports = {
   handleAddPassword,
   handleViewApps,
   handleGetPassword,
+  handleDeletePassword
 };
